@@ -1,0 +1,14 @@
+<p-toolbar>
+  <div *ngIf="showDefaultNavbar; else addProductContent" class="p-toolbar-group-left">
+    <p-button label="New Product" (onClick)="onAddProduct()" icon="pi pi-plus"></p-button>
+  </div>
+  <div *ngIf="showDefaultNavbar" class="p-toolbar-group-right">
+    <input type="text" pInputText [(ngModel)]="inputValue" />
+    <p-button icon="pi pi-search"></p-button>
+  </div>
+  <ng-template #addProductContent>
+    <div class="p-toolbar-group-center">
+      <span class="navbar-text">Add New Product</span>
+    </div>
+  </ng-template>
+</p-toolbar>

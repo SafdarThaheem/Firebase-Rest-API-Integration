@@ -1,0 +1,57 @@
+<!-- <div class="row">{{productList[0] | json}}</div> -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <p-table [value]="productList" [tableStyle]="{'min-width': '60rem'}">
+        <ng-template pTemplate="caption">
+          <div class="flex align-items-center justify-content-between">
+            Products
+            <p-button icon="pi pi-refresh" (click)="reload()" />
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th *ngFor="let column of columns">{{column.header}}</th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product>
+          <tr>
+            <td>{{product.name || '-'}}</td>
+            <td>
+              <!-- <img [src]="product.img" [alt]="product.name" width="100" class="shadow-4" /> -->
+            </td>
+            <td>{{product.orderAmount || '-'}}</td>
+            <td>{{product.price || '-'}}</td>
+            <td>{{product.stockAmount || '-'}}</td>
+            <td>
+              <p-button (click)="showDialog(product)" icon="pi pi-pen-to-square" />
+              <p-button (click)="onDelete(product)" severity="danger" icon="pi pi-trash" />
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          <div class="flex align-items-center justify-content-between">
+            In total there are {{productList ? productList.length : 0 }} products.
+          </div>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
+
+<!-- dialog -->
+<div class="card flex justify-content-center">
+  <p-dialog header="Edit Products" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
+    <span class="p-text-secondary block mb-5">Update your information.</span>
+    <form [formGroup]="productForm" (ngSubmit)="onUpdate()">
+      <div class="flex align-items-center gap-3 mb-3" *ngFor="let field of editFormFields">
+        <label [for]="field.id" class="font-semibold w-6rem">{{field.label}}</label>
+        <input pInputText [id]="field.id" class="flex-auto" autocomplete="off" [formControlName]="field.name" />
+      </div>
+      <div class="flex justify-content-end gap-2">
+        <p-button label="Submit" type="Submit" [disabled]="!productForm.valid"></p-button>
+      </div>
+    </form>
+  </p-dialog>
+</div>
