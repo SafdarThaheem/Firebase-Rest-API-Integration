@@ -2,11 +2,12 @@
 <div class="row">
   <div class="col-md-12">
     <div class="card">
+      <p-button label="New Product" (click)="productFormOpen('Add')" icon="pi pi-plus"></p-button>
       <p-table [value]="productList" [tableStyle]="{'min-width': '60rem'}">
         <ng-template pTemplate="caption">
           <div class="flex align-items-center justify-content-between">
             Products
-            <p-button icon="pi pi-refresh" (click)="reload()" />
+            <!-- <p-button icon="pi pi-refresh" (click)="reload()" /> -->
           </div>
         </ng-template>
         <ng-template pTemplate="header">
@@ -25,8 +26,8 @@
             <td>{{product.price || '-'}}</td>
             <td>{{product.stockAmount || '-'}}</td>
             <td>
-              <p-button (click)="showDialog(product)" icon="pi pi-pen-to-square" />
-              <p-button (click)="onDelete(product)" severity="danger" icon="pi pi-trash" />
+              <p-button (click)="productFormOpen('Edit',product)" icon="pi pi-pen-to-square" />
+              <p-button (click)="productFormOpen('Delete',product)" severity="danger" icon="pi pi-trash" />
             </td>
           </tr>
         </ng-template>
@@ -40,18 +41,7 @@
   </div>
 </div>
 
-<!-- dialog -->
+<!-- tost -->
 <div class="card flex justify-content-center">
-  <p-dialog header="Edit Products" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
-    <span class="p-text-secondary block mb-5">Update your information.</span>
-    <form [formGroup]="productForm" (ngSubmit)="onUpdate()">
-      <div class="flex align-items-center gap-3 mb-3" *ngFor="let field of editFormFields">
-        <label [for]="field.id" class="font-semibold w-6rem">{{field.label}}</label>
-        <input pInputText [id]="field.id" class="flex-auto" autocomplete="off" [formControlName]="field.name" />
-      </div>
-      <div class="flex justify-content-end gap-2">
-        <p-button label="Submit" type="Submit" [disabled]="!productForm.valid"></p-button>
-      </div>
-    </form>
-  </p-dialog>
+  <p-toast />
 </div>

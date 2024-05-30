@@ -1,0 +1,17 @@
+<div class="row justify-content-center">
+  <form [formGroup]="ProductForm" (ngSubmit)="onProductFormControls()">
+    <div class="flex align-items-center gap-3 mb-3" *ngFor="let field of formFields">
+      <label [for]="field.id" class="font-semibold w-9rem">{{ field.label }}</label>
+      <input pInputText [id]="field.id" class="flex-auto" autocomplete="off" [formControlName]="field.name" />
+      <div
+        *ngIf="ProductForm.get(field.name)?.invalid && (ProductForm.get(field.name)?.dirty || ProductForm.get(field.name)?.touched)">
+        <small class="p-error" *ngIf="ProductForm.get(field.name)?.errors?.['required']">
+          {{ field.label }} is required.
+        </small>
+      </div>
+    </div>
+    <div class="flex justify-content-end gap-2">
+      <p-button [label]="action" type="Submit" [disabled]="!ProductForm.valid"></p-button>
+    </div>
+  </form>
+</div>

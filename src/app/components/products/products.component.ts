@@ -1,17 +1,20 @@
 import { Component } from '@angular/core';
 import { ProductsService } from '../../shared/services/products.service';
+import {
+  DialogService,
+  DynamicDialogModule,
+  DynamicDialogRef,
+} from 'primeng/dynamicdialog';
 import { DialogModule } from 'primeng/dialog';
 import { Product } from '../../shared/models/product';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MenuModule } from 'primeng/menu';
 import { CommonModule } from '@angular/common';
+import { ProductFormComponent } from '../product-form/product-form.component';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-products',
@@ -20,27 +23,54 @@ import { CommonModule } from '@angular/common';
     TableModule,
     ButtonModule,
     DialogModule,
+    DynamicDialogModule,
     ReactiveFormsModule,
     MenuModule,
     CommonModule,
+    ToastModule,
   ],
+  providers: [DialogService, MessageService],
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss',
 })
 export class ProductsComponent {
-  visible: boolean = false;
-  productList: Product[] = [];
-  productForm!: FormGroup;
-  selectedProduct!: Product;
+  public productList: Product[] = [];
+  public productForm!: FormGroup;
+  public selectedProduct!: Product;
 
-  constructor(private productsService: ProductsService) {}
+  ref: DynamicDialogRef | undefined;
+
+  constructor(
+    private productsService: ProductsService,
+    public dialogService: DialogService,
+    private messageService: MessageService
+  ) {}
 
   ngOnInit(): void {
-    this.initProductForm();
     this.getAllProducts();
-    // console.log(this.productList);
   }
 
+  // Dynamic Dialog
+  productFormOpen(action: string, selectedProduct?: Product) {
+    this.ref = this.dialogService.open(ProductFormComponent, {
+      header: `${action} Product`,
+      width: '50%',
+      data: { product: selectedProduct, action: action },
+    });
+
+    this.ref.onClose.subscribe((result) => {
+      if (result?.success) {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: `${result.action} product successfully`,
+        });
+        this.getAllProducts();
+      }
+    });
+  }
+
+  // table header
   columns = [
     { field: 'name', header: 'Name' },
     { field: 'imgUrl', header: 'Image' },
@@ -49,71 +79,12 @@ export class ProductsComponent {
     { field: 'stockAmount', header: 'Stock' },
   ];
 
-  editFormFields = [
-    { id: 'name', label: 'Name', name: 'name' },
-    { id: 'orderAmount', label: 'Order Amount', name: 'orderAmount' },
-    { id: 'price', label: 'Price', name: 'price' },
-    { id: 'stock', label: 'Stock', name: 'stock' },
-  ];
-
-  initProductForm() {
-    this.productForm = new FormGroup({
-      name: new FormControl('', Validators.required),
-      orderAmount: new FormControl('', Validators.required),
-      price: new FormControl('', Validators.required),
-      stock: new FormControl('', Validators.required),
-    });
-  }
-
+  // Fetch All Products
   getAllProducts() {
     this.productsService.getProducts().subscribe((response: Product[]) => {
-      this.productList = response;
+      if (response) {
+        this.productList = response;
+      }
     });
-  }
-
-  onUpdate() {
-    let updatedProductObject: Product;
-    updatedProductObject = {
-      ...this.selectedProduct,
-      ...this.productForm.value,
-    };
-    this.productsService.updateProducts(updatedProductObject).subscribe({
-      next: () => {
-        this.visible = false;
-        this.getAllProducts();
-      },
-      error: () => {
-        this.visible = true;
-      },
-    });
-  }
-
-  onDelete(product: Product): void {
-    this.productsService.deleteProduct(product).subscribe({
-      next: () => {
-        this.visible = false;
-        this.getAllProducts();
-      },
-      error: () => {
-        this.visible = true;
-      },
-    });
-  }
-
-  showDialog(selectedProduct: Product) {
-    this.visible = true;
-    this.selectedProduct = selectedProduct; // Store the selected product
-    console.log(selectedProduct);
-    this.productForm.patchValue({
-      name: selectedProduct.name,
-      orderAmount: selectedProduct.orderAmount,
-      price: selectedProduct.price,
-      stock: selectedProduct.stockAmount,
-    });
-  }
-
-  reload() {
-    console.log('reload');
-    this.getAllProducts();
   }
 }
