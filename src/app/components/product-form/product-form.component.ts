@@ -12,8 +12,8 @@ import { CommonModule } from '@angular/common';
 import { ProductsService } from '../../shared/services/products.service';
 import { Router } from '@angular/router';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { MessageService } from 'primeng/api';
-import { Product } from '../../shared/models/product';
+import { MessagesModule } from 'primeng/messages';
+import { Message } from 'primeng/api';
 
 @Component({
   selector: 'app-product-form',
@@ -24,6 +24,7 @@ import { Product } from '../../shared/models/product';
     ReactiveFormsModule,
     FormsModule,
     CommonModule,
+    MessagesModule,
   ],
   templateUrl: './product-form.component.html',
   styleUrl: './product-form.component.scss',
@@ -31,13 +32,13 @@ import { Product } from '../../shared/models/product';
 export class ProductFormComponent implements OnInit {
   public ProductForm!: FormGroup;
   public action: string = '';
+  public messages!: Message[];
 
   constructor(
     private productService: ProductsService,
     private router: Router,
     private ref: DynamicDialogRef,
-    private config: DynamicDialogConfig,
-    private messageService: MessageService
+    private config: DynamicDialogConfig
   ) {}
 
   ngOnInit(): void {
@@ -45,6 +46,12 @@ export class ProductFormComponent implements OnInit {
     this.action = this.config.data?.action;
     if (this.action != 'Add') {
       this.ProductForm.patchValue(this.config.data?.product);
+    }
+    if (this.action === 'Delete') {
+      this.messages = [
+        { severity: 'error', detail: 'Are you sure Delete this Product' },
+      ];
+      this.ProductForm.disable();
     }
   }
 

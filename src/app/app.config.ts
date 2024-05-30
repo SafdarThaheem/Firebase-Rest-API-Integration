@@ -5,7 +5,7 @@ import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient } from '@angular/common/http';
-import { DynamicDialogInjector } from 'primeng/dynamicdialog';
+import { firebaseApi } from './shared/firebase-api/firebase-api';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -13,5 +13,6 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     provideAnimationsAsync(),
     provideHttpClient(),
+    firebaseApi,
   ],
 };
