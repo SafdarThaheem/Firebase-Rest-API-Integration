@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { MessagesModule } from 'primeng/messages';
 import { Message } from 'primeng/api';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-product-form',
@@ -25,6 +26,7 @@ import { Message } from 'primeng/api';
     FormsModule,
     CommonModule,
     MessagesModule,
+    ProgressSpinnerModule,
   ],
   templateUrl: './product-form.component.html',
   styleUrl: './product-form.component.scss',
@@ -33,6 +35,7 @@ export class ProductFormComponent implements OnInit {
   public ProductForm!: FormGroup;
   public action: string = '';
   public messages!: Message[];
+  public isLoading: boolean = false;
 
   constructor(
     private productService: ProductsService,
@@ -95,12 +98,14 @@ export class ProductFormComponent implements OnInit {
   // Add New Product
   onAddProduct() {
     if (this.ProductForm.valid) {
+      this.isLoading = true;
       this.productService.addProduct(this.ProductForm.value).subscribe({
         next: () => {
           this.ProductForm.reset();
           this.ref.close({ success: true, action: 'Add' });
         },
         error: () => {
+          this.isLoading = false;
           this.ref.close({ success: false });
         },
       });
@@ -109,12 +114,14 @@ export class ProductFormComponent implements OnInit {
 
   // Update Product
   onUpdate(): void {
+    this.isLoading = true;
     this.productService.updateProducts(this.ProductForm.value).subscribe({
       next: () => {
         this.ProductForm.reset();
         this.ref.close({ success: true, action: 'Edit' });
       },
       error: () => {
+        this.isLoading = false;
         this.ref.close({ success: false });
       },
     });
@@ -122,13 +129,14 @@ export class ProductFormComponent implements OnInit {
 
   // Delete Product
   onDelete(): void {
+    this.isLoading = true;
     this.productService.deleteProduct(this.ProductForm.value).subscribe({
       next: () => {
-        // this.getAllProducts();
         this.ref.close({ success: true, action: 'Delete' });
       },
       error: () => {
         // handle error
+        this.isLoading = false;
         this.ref.close({ success: false });
       },
     });

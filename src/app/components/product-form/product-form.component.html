@@ -11,8 +11,10 @@
         </small>
       </div>
     </div>
-    <div class="flex justify-content-end gap-2">
-      <p-button [label]="action" type="Submit"></p-button>
+    <div class="flex justify-content-end align-items-center gap-2">
+      <p-progressSpinner *ngIf="isLoading" styleClass="w-2rem h-4rem" strokeWidth="5" fill="var(--surface-ground)"
+        animationDuration=".5s"></p-progressSpinner>
+      <p-button [label]="isLoading ? 'Loading...' : action" type="Submit" [disabled]="isLoading"></p-button>
     </div>
   </form>
 </div>

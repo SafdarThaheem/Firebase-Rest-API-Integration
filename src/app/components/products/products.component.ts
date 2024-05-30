@@ -38,7 +38,7 @@ export class ProductsComponent {
   public productForm!: FormGroup;
   public selectedProduct!: Product;
 
-  ref: DynamicDialogRef | undefined;
+  private ref: DynamicDialogRef | undefined;
 
   constructor(
     private productsService: ProductsService,
@@ -71,12 +71,13 @@ export class ProductsComponent {
   }
 
   // table header
-  columns = [
-    { field: 'name', header: 'Name' },
-    { field: 'imgUrl', header: 'Image' },
-    { field: 'orderAmount', header: 'Order Amount' },
-    { field: 'price', header: 'Price' },
-    { field: 'stockAmount', header: 'Stock' },
+  tableHeader = [
+    { field: 'name', title: 'Name' },
+    { field: 'imgUrl', title: 'Image' },
+    { field: 'orderAmount', title: 'Order Amount' },
+    { field: 'price', title: 'Price' },
+    { field: 'stockAmount', title: 'Stock' },
+    { field: 'action', title: 'Action' },
   ];
 
   // Fetch All Products

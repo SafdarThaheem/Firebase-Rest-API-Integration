@@ -12,15 +12,16 @@
         </ng-template>
         <ng-template pTemplate="header">
           <tr>
-            <th *ngFor="let column of columns">{{column.header}}</th>
-            <th></th>
+            @for(head of tableHeader; track head){
+            <th>{{head.title}}</th>
+            }
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-product>
           <tr>
             <td>{{product.name || '-'}}</td>
             <td>
-              <!-- <img [src]="product.img" [alt]="product.name" width="100" class="shadow-4" /> -->
+              <img [src]="product.img" [alt]="product.name" width="100" class="shadow-4" />
             </td>
             <td>{{product.orderAmount || '-'}}</td>
             <td>{{product.price || '-'}}</td>
