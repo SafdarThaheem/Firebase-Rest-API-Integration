@@ -1,1 +1,18 @@
-<p>category-form works!</p>
+<div class="row justify-content-center">
+  <p-messages [(value)]="messages" [enableService]="false" [closable]="false" />
+  <form [formGroup]="categoryForm" (ngSubmit)="onCategoryFormControls()">
+    <div class="flex flex-column mb-3">
+      <label for="categoryName" class="font-semibold">Category ID</label>
+      <input pInputText class="flex-auto" autocomplete="off" formControlName="categoryId" />
+    </div>
+    <div class="flex flex-column mb-3">
+      <label for="categoryName" class="font-semibold">Category</label>
+      <input pInputText class="flex-auto" autocomplete="off" formControlName="name" />
+    </div>
+    <div class="flex justify-content-end align-items-center gap-2">
+      <p-progressSpinner *ngIf="isLoading" styleClass="w-2rem h-4rem" strokeWidth="5" fill="var(--surface-ground)"
+        animationDuration=".5s"></p-progressSpinner>
+      <p-button [label]="isLoading ? 'Loading...' : action" type="Submit" [disabled]="isLoading"></p-button>
+    </div>
+  </form>
+</div>

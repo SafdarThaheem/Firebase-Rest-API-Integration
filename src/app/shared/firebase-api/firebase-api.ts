@@ -5,6 +5,7 @@ export class firebaseApi {
     products: 'products',
     productObjects: 'products.json',
     categoryObject: 'categories.json',
+    categories: 'categories',
     suppliers: 'suppliers.json',
   };
 }

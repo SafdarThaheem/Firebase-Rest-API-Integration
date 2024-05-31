@@ -1,11 +1,13 @@
 <div class="row my-2">
   <div class="col-md-12">
+    <div class="my-2">
+      <p-button label="New Category" (click)="categoryFormOpen('Add')" icon="pi pi-plus"></p-button>
+    </div>
     <div class="card">
       <p-table [value]="categoryList" [tableStyle]="{'min-width': '40rem'}">
         <ng-template pTemplate="caption">
           <div class="flex align-items-center justify-content-between">
             Categories
-            <!-- <p-button icon="pi pi-refresh" (click)="reload()" /> -->
           </div>
         </ng-template>
         <ng-template pTemplate="header">
@@ -18,8 +20,8 @@
           <tr>
             <td>{{category.name || '-'}}</td>
             <td>
-              <p-button icon="pi pi-pen-to-square" />
-              <p-button severity="danger" icon="pi pi-trash" />
+              <p-button (click)="categoryFormOpen('Edit', category)" icon="pi pi-pen-to-square" />
+              <p-button (click)="categoryFormOpen('Delete', category)" severity="danger" icon="pi pi-trash" />
             </td>
           </tr>
         </ng-template>
@@ -31,4 +33,9 @@
       </p-table>
     </div>
   </div>
+</div>
+
+<!-- tost -->
+<div class="card flex justify-content-center">
+  <p-toast />
 </div>

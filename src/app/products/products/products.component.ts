@@ -42,7 +42,7 @@ export class ProductsComponent {
 
   constructor(
     private productsService: ProductsService,
-    public dialogService: DialogService,
+    private dialogService: DialogService,
     private messageService: MessageService
   ) {}
 

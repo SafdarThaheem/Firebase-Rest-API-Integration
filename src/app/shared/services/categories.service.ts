@@ -14,7 +14,7 @@ export class CategoriesService {
   getAllCategories(): Observable<Icategory[]> {
     return this.http
       .get<{ [key: string]: Icategory }>(
-        `${this.firebaseApi.apiBaseUrl}/${this.firebaseApi.apiEndPoints.categoryObject}?orderBy="$key"&limitToFirst=10`
+        `${this.firebaseApi.apiBaseUrl}/${this.firebaseApi.apiEndPoints.categoryObject}?orderBy="$key"&limitToLast=20`
       )
       .pipe(
         map((responseData) => {
@@ -27,5 +27,28 @@ export class CategoriesService {
           return productsArray;
         })
       );
+  }
+
+  // Add New Category
+  addNewCategory(category: Icategory): Observable<Icategory> {
+    return this.http.post<Icategory>(
+      `${this.firebaseApi.apiBaseUrl}/${this.firebaseApi.apiEndPoints.categoryObject}`,
+      category
+    );
+  }
+
+  // Delete Selected Category
+  deleteCategory(category: Icategory): Observable<Icategory> {
+    return this.http.delete<Icategory>(
+      `${this.firebaseApi.apiBaseUrl}/${this.firebaseApi.apiEndPoints.categories}/${category.categoryId}.json`
+    );
+  }
+
+  // Update Selected Category
+  updateCategory(updatedCategory: Icategory): Observable<Icategory> {
+    return this.http.put<Icategory>(
+      `${this.firebaseApi.apiBaseUrl}/${this.firebaseApi.apiEndPoints.categories}/${updatedCategory.categoryId}.json`,
+      updatedCategory
+    );
   }
 }
