@@ -2,10 +2,6 @@
   <p-messages [(value)]="messages" [enableService]="false" [closable]="false" />
   <form [formGroup]="categoryForm" (ngSubmit)="onCategoryFormControls()">
     <div class="flex flex-column mb-3">
-      <label for="categoryName" class="font-semibold">Category ID</label>
-      <input pInputText class="flex-auto" autocomplete="off" formControlName="categoryId" />
-    </div>
-    <div class="flex flex-column mb-3">
       <label for="categoryName" class="font-semibold">Category</label>
       <input pInputText class="flex-auto" autocomplete="off" formControlName="name" />
     </div>

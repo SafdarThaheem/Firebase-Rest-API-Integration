@@ -59,7 +59,7 @@ export class CategoryFormComponent implements OnInit {
 
   initCategoryForm() {
     this.categoryForm = new FormGroup({
-      categoryId: new FormControl('', Validators.required),
+      // categoryId: new FormControl('', Validators.required),
       name: new FormControl('', Validators.required),
     });
   }
@@ -109,7 +109,7 @@ export class CategoryFormComponent implements OnInit {
     console.log(this.categoryForm.value);
     this.isLoading = true;
     this.categoryService
-      .deleteCategory(this.categoryForm.value)
+      .deleteCategory(this.config.data?.category)
       .subscribe((result) => {
         this.isLoading = false;
         this.ref.close({ success: true, action: 'Delete' });
