@@ -24,7 +24,7 @@ export class CategoriesService {
               productsArray.push({ ...responseData[key], categoryId: key });
             }
           }
-          return productsArray;
+          return productsArray.reverse();
         })
       );
   }

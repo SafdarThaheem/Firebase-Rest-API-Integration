@@ -59,7 +59,6 @@ export class CategoryFormComponent implements OnInit {
 
   initCategoryForm() {
     this.categoryForm = new FormGroup({
-      // categoryId: new FormControl('', Validators.required),
       name: new FormControl('', Validators.required),
     });
   }
