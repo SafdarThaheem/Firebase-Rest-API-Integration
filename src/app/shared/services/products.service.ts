@@ -14,7 +14,7 @@ export class ProductsService {
   getProducts(): Observable<Product[]> {
     return this.http
       .get<{ [key: string]: Product }>(
-        `${this.firebaseApi.apiBaseUrl}/${this.firebaseApi.apiEndPoints.productObjects}?orderBy="$key"&sort=desc&limitToLast=10`
+        `${this.firebaseApi.apiBaseUrl}/${this.firebaseApi.apiEndPoints.productObjects}?orderBy="$key"&limitToLast=10`
       )
       .pipe(
         map((responseData) => {

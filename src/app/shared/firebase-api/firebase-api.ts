@@ -4,7 +4,7 @@ export class firebaseApi {
   public apiEndPoints = {
     products: 'products',
     productObjects: 'products.json',
-    categories: 'categories.json',
+    categoryObject: 'categories.json',
     suppliers: 'suppliers.json',
   };
 }
