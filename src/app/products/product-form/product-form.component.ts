@@ -15,6 +15,7 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { MessagesModule } from 'primeng/messages';
 import { Message } from 'primeng/api';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-product-form',
@@ -27,6 +28,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     CommonModule,
     MessagesModule,
     ProgressSpinnerModule,
+    InputTextModule,
   ],
   templateUrl: './product-form.component.html',
   styleUrl: './product-form.component.scss',

@@ -1,8 +1,8 @@
 <div class="row justify-content-center">
   <p-messages [(value)]="messages" [enableService]="false" [closable]="false" />
   <form [formGroup]="ProductForm" (ngSubmit)="onProductFormControls()">
-    <div class="flex align-items-center gap-3 mb-3" *ngFor="let field of formFields">
-      <label [for]="field.id" class="font-semibold w-9rem">{{ field.label }}</label>
+    <div class="flex flex-column" *ngFor="let field of formFields">
+      <label [for]="field.id" class="font-semibold my-1">{{ field.label }}</label>
       <input pInputText [id]="field.id" class="flex-auto" autocomplete="off" [formControlName]="field.name" />
       <div
         *ngIf="ProductForm.get(field.name)?.invalid && (ProductForm.get(field.name)?.dirty || ProductForm.get(field.name)?.touched)">
@@ -11,7 +11,7 @@
         </small>
       </div>
     </div>
-    <div class="flex justify-content-end align-items-center gap-2">
+    <div class="flex justify-content-end align-items-center mt-2 gap-2">
       <p-progressSpinner *ngIf="isLoading" styleClass="w-2rem h-4rem" strokeWidth="5" fill="var(--surface-ground)"
         animationDuration=".5s"></p-progressSpinner>
       <p-button [label]="isLoading ? 'Loading...' : action" type="Submit" [disabled]="isLoading"></p-button>

@@ -14,6 +14,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { CommonModule } from '@angular/common';
 import { MessagesModule } from 'primeng/messages';
 import { ToastModule } from 'primeng/toast';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-category-form',
@@ -26,6 +27,7 @@ import { ToastModule } from 'primeng/toast';
     CommonModule,
     MessagesModule,
     ToastModule,
+    InputTextModule,
   ],
   templateUrl: './category-form.component.html',
   styleUrl: './category-form.component.scss',
