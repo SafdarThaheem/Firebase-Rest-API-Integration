@@ -24,6 +24,7 @@ export class CategoryListComponent implements OnInit {
   categoryList!: Icategory[];
 
   constructor(private categoryService: CategoriesService) {}
+
   ngOnInit(): void {
     this.fetchCategoryList();
   }
