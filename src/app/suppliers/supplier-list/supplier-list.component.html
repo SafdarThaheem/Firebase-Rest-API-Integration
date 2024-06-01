@@ -1,1 +1,41 @@
-<p>supplier-list works!</p>
+<div class="row my-2">
+  <div class="col-md-12">
+    <div class="my-2">
+      <p-button label="New Category" (click)="supplierFormOpen('Add')" icon="pi pi-plus"></p-button>
+    </div>
+    <div class="card">
+      <p-table [value]="supplierList" [tableStyle]="{'min-width': '40rem'}">
+        <ng-template pTemplate="caption">
+          <div class="flex align-items-center justify-content-between">
+            Suppliers
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Supplier</th>
+            <th>Actions</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-supplier>
+          <tr>
+            <td>{{supplier.name || '-'}}</td>
+            <td>
+              <p-button (click)="supplierFormOpen('Edit', supplier)" icon="pi pi-pen-to-square" />
+              <p-button (click)="supplierFormOpen('Delete', supplier)" severity="danger" icon="pi pi-trash" />
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          <div class="flex align-items-center justify-content-between">
+            In total there are {{supplierList? supplierList.length : 0 }} Suppliers.
+          </div>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
+
+<!-- tost -->
+<div class="card flex justify-content-center">
+  <p-toast />
+</div>

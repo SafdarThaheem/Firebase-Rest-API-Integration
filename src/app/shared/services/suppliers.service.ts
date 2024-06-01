@@ -14,7 +14,7 @@ export class SuppliersService {
   getAllSuppliers(): Observable<Isupplier[]> {
     return this.http
       .get<{ [key: string]: Isupplier }>(
-        `${this.firebaseApi.apiBaseUrl}/${this.firebaseApi.apiEndPoints.supplierObject}`
+        `${this.firebaseApi.apiBaseUrl}/${this.firebaseApi.apiEndPoints.supplierObject}?orderBy="$key"&limitToLast=10`
       )
       .pipe(
         map((responseData) => {
@@ -24,7 +24,7 @@ export class SuppliersService {
               suppliersArray.push({ ...responseData[key], supplierId: key });
             }
           }
-          return suppliersArray;
+          return suppliersArray.reverse();
         })
       );
   }

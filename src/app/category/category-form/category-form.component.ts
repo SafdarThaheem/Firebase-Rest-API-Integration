@@ -107,7 +107,6 @@ export class CategoryFormComponent implements OnInit {
 
   // delete category
   onDeleteCategory() {
-    console.log(this.categoryForm.value);
     this.isLoading = true;
     this.categoryService
       .deleteCategory(this.config.data?.category)

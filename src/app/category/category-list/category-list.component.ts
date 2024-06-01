@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CategoriesService } from '../../shared/services/categories.service';
 import { FormControl, FormGroup, FormsModule } from '@angular/forms';
+import { Icategory } from '../../shared/models/icategory';
 import { ListboxModule } from 'primeng/listbox';
 import { CommonModule } from '@angular/common';
-import { Icategory } from '../../shared/models/icategory';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import {
@@ -12,8 +12,8 @@ import {
   DynamicDialogRef,
 } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
-import { CategoryFormComponent } from '../category-form/category-form.component';
 import { ToastModule } from 'primeng/toast';
+import { CategoryFormComponent } from '../category-form/category-form.component';
 
 @Component({
   selector: 'app-category-list',
