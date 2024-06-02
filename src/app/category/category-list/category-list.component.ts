@@ -14,6 +14,7 @@ import {
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { CategoryFormComponent } from '../category-form/category-form.component';
+import { SearchComponent } from '../../search/search.component';
 
 @Component({
   selector: 'app-category-list',
@@ -26,6 +27,7 @@ import { CategoryFormComponent } from '../category-form/category-form.component'
     ButtonModule,
     DynamicDialogModule,
     ToastModule,
+    SearchComponent,
   ],
   providers: [DialogService, MessageService],
   templateUrl: './category-list.component.html',
@@ -71,5 +73,16 @@ export class CategoryListComponent implements OnInit {
         this.categoryList = res;
       }
     });
+  }
+
+  onSearch(searchValue: string) {
+    if (searchValue === '') {
+      this.fetchCategoryList();
+      return;
+    } else {
+      this.categoryList = this.categoryList.filter((category) =>
+        category.name.toLowerCase().includes(searchValue.toLowerCase())
+      );
+    }
   }
 }
