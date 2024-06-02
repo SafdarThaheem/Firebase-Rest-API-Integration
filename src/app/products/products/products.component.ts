@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 import { ProductFormComponent } from '../product-form/product-form.component';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { SearchComponent } from '../../search/search.component';
 
 @Component({
   selector: 'app-products',
@@ -28,6 +29,7 @@ import { ToastModule } from 'primeng/toast';
     MenuModule,
     CommonModule,
     ToastModule,
+    SearchComponent,
   ],
   providers: [DialogService, MessageService],
   templateUrl: './products.component.html',
@@ -87,5 +89,17 @@ export class ProductsComponent {
         this.productList = response;
       }
     });
+  }
+
+  // filter the Product list
+  onSearch(searchValue: string) {
+    if (searchValue === '') {
+      this.getAllProducts();
+      return;
+    } else {
+      this.productList = this.productList.filter((product) =>
+        product.name.toLowerCase().includes(searchValue.toLowerCase())
+      );
+    }
   }
 }

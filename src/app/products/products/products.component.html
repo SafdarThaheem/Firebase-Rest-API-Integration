@@ -1,15 +1,15 @@
 <!-- <div class="row">{{productList[0] | json}}</div> -->
 <div class="row">
   <div class="col-md-12">
-    <div class="my-2">
+    <div class="my-2 d-flex justify-content-between">
       <p-button label="New Product" (click)="productFormOpen('Add')" icon="pi pi-plus"></p-button>
+      <app-search (searchValueChange)="onSearch($event)"></app-search>
     </div>
     <div class="card">
       <p-table [value]="productList" [tableStyle]="{'min-width': '60rem'}">
         <ng-template pTemplate="caption">
           <div class="flex align-items-center justify-content-between">
             Products
-            <!-- <p-button icon="pi pi-refresh" (click)="reload()" /> -->
           </div>
         </ng-template>
         <ng-template pTemplate="header">
