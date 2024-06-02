@@ -54,7 +54,7 @@ export class SupplierFormComponent implements OnInit {
     }
     if (this.action === 'Delete') {
       this.messages = [
-        { severity: 'error', detail: 'Are you sure Delete Category' },
+        { severity: 'error', detail: 'Are you sure Delete Supplier' },
       ];
       this.supplierForm.disable();
     }

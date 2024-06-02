@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, computed, input, Input, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { SuppliersService } from '../../shared/services/suppliers.service';
 import { ListboxModule } from 'primeng/listbox';
@@ -13,6 +13,7 @@ import {
 import { ToastModule } from 'primeng/toast';
 import { Isupplier } from '../../shared/models/isupplier';
 import { SupplierFormComponent } from '../supplier-form/supplier-form.component';
+import { SearchComponent } from '../../search/search.component';
 
 @Component({
   selector: 'app-supplier-list',
@@ -24,6 +25,7 @@ import { SupplierFormComponent } from '../supplier-form/supplier-form.component'
     ButtonModule,
     DynamicDialogModule,
     ToastModule,
+    SearchComponent,
   ],
   providers: [DialogService, MessageService],
   templateUrl: './supplier-list.component.html',
@@ -31,6 +33,7 @@ import { SupplierFormComponent } from '../supplier-form/supplier-form.component'
 })
 export class SupplierListComponent implements OnInit {
   supplierList!: Isupplier[];
+
   private ref: DynamicDialogRef | undefined;
 
   constructor(
@@ -42,6 +45,8 @@ export class SupplierListComponent implements OnInit {
   ngOnInit(): void {
     this.getSuppliersList();
   }
+
+  ngOnChanges(): void {}
 
   // dynamic dialog
   supplierFormOpen(action: string, supplier?: Isupplier): void {
@@ -56,7 +61,7 @@ export class SupplierListComponent implements OnInit {
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
-          detail: `${result.action} Category successfully`,
+          detail: `${result.action} supplier successfully`,
         });
         this.getSuppliersList();
       }
@@ -69,5 +74,17 @@ export class SupplierListComponent implements OnInit {
         this.supplierList = res;
       }
     });
+  }
+
+  // filter the supplier list
+  onSearch(searchValue: string) {
+    if (searchValue === '') {
+      this.getSuppliersList();
+      return;
+    } else {
+      this.supplierList = this.supplierList.filter((supplier) =>
+        supplier.name.toLowerCase().includes(searchValue.toLowerCase())
+      );
+    }
   }
 }

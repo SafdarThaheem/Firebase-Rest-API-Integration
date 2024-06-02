@@ -1,7 +1,8 @@
 <div class="row my-2">
   <div class="col-md-12">
-    <div class="my-2">
+    <div class="my-2 d-flex justify-content-between">
       <p-button label="New Category" (click)="supplierFormOpen('Add')" icon="pi pi-plus"></p-button>
+      <app-search (searchValueChange)="onSearch($event)"></app-search>
     </div>
     <div class="card">
       <p-table [value]="supplierList" [tableStyle]="{'min-width': '40rem'}">
