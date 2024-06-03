@@ -21,6 +21,7 @@ import { CategoriesService } from '../../shared/services/categories.service';
 import { Isupplier } from '../../shared/models/isupplier';
 import { Icategory } from '../../shared/models/icategory';
 import { DropdownModule } from 'primeng/dropdown';
+import { actions } from '../../shared/enum/actions.enum';
 
 @Component({
   selector: 'app-product-form',
@@ -42,6 +43,7 @@ import { DropdownModule } from 'primeng/dropdown';
 export class ProductFormComponent implements OnInit {
   public ProductForm!: FormGroup;
   public action: string = '';
+  public actionState = actions;
   public messages!: Message[];
   public isLoading: boolean = false;
   public suppliersList: Isupplier[] = [];
@@ -61,10 +63,10 @@ export class ProductFormComponent implements OnInit {
     this.getSupplierList();
     this.getCategoryList();
     this.action = this.config.data?.action;
-    if (this.action != 'Add') {
+    if (this.action != this.actionState.add) {
       this.ProductForm.patchValue(this.config.data?.product);
     }
-    if (this.action === 'Delete') {
+    if (this.action === this.actionState.delete) {
       this.messages = [
         { severity: 'error', detail: 'Are you sure Delete this Product' },
       ];
@@ -98,13 +100,13 @@ export class ProductFormComponent implements OnInit {
 
   // Product Form controls
   onProductFormControls() {
-    if (this.action === 'Add') {
+    if (this.action === this.actionState.add) {
       this.onAddProduct();
     }
-    if (this.action === 'Edit') {
+    if (this.action === this.actionState.edit) {
       this.onUpdate();
     }
-    if (this.action === 'Delete') {
+    if (this.action === this.actionState.delete) {
       this.onDelete();
     }
   }
@@ -116,7 +118,7 @@ export class ProductFormComponent implements OnInit {
       this.productService.addProduct(this.ProductForm.value).subscribe({
         next: () => {
           this.ProductForm.reset();
-          this.ref.close({ success: true, action: 'Add' });
+          this.ref.close({ success: true, action: this.actionState.add });
         },
         error: () => {
           this.isLoading = false;
@@ -132,7 +134,7 @@ export class ProductFormComponent implements OnInit {
     this.productService.updateProducts(this.ProductForm.value).subscribe({
       next: () => {
         this.ProductForm.reset();
-        this.ref.close({ success: true, action: 'Edit' });
+        this.ref.close({ success: true, action: this.actionState.edit });
       },
       error: () => {
         this.isLoading = false;
@@ -146,7 +148,7 @@ export class ProductFormComponent implements OnInit {
     this.isLoading = true;
     this.productService.deleteProduct(this.ProductForm.value).subscribe({
       next: () => {
-        this.ref.close({ success: true, action: 'Delete' });
+        this.ref.close({ success: true, action: this.actionState.delete });
       },
       error: () => {
         // handle error

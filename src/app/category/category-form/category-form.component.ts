@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 import { MessagesModule } from 'primeng/messages';
 import { ToastModule } from 'primeng/toast';
 import { InputTextModule } from 'primeng/inputtext';
+import { actions } from '../../shared/enum/actions.enum';
 
 @Component({
   selector: 'app-category-form',
@@ -35,6 +36,7 @@ import { InputTextModule } from 'primeng/inputtext';
 export class CategoryFormComponent implements OnInit {
   public categoryForm!: FormGroup;
   public action: string = '';
+  public actionState = actions;
   public isLoading: boolean = false;
   public messages!: Message[];
 
@@ -48,10 +50,10 @@ export class CategoryFormComponent implements OnInit {
     this.initCategoryForm();
     this.action = this.config.data?.action;
     console.log(this.config.data?.category);
-    if (this.action != 'Add') {
+    if (this.action != this.actionState.add) {
       this.categoryForm.patchValue(this.config.data?.category);
     }
-    if (this.action === 'Delete') {
+    if (this.action === this.actionState.delete) {
       this.messages = [
         { severity: 'error', detail: 'Are you sure Delete Category' },
       ];
@@ -66,13 +68,13 @@ export class CategoryFormComponent implements OnInit {
   }
 
   onCategoryFormControls() {
-    if (this.action === 'Add') {
+    if (this.action === this.actionState.add) {
       this.onAddCategory();
     }
-    if (this.action === 'Edit') {
+    if (this.action === this.actionState.edit) {
       this.onUpdateCategory();
     }
-    if (this.action === 'Delete') {
+    if (this.action === this.actionState.delete) {
       this.onDeleteCategory();
     }
   }
@@ -86,7 +88,7 @@ export class CategoryFormComponent implements OnInit {
         .addNewCategory(this.categoryForm.value)
         .subscribe((result) => {
           this.isLoading = false;
-          this.ref.close({ success: true, action: 'Add' });
+          this.ref.close({ success: true, action: this.actionState.add });
         });
     }
   }
@@ -100,7 +102,7 @@ export class CategoryFormComponent implements OnInit {
         .updateCategory(this.categoryForm.value)
         .subscribe((result) => {
           this.isLoading = false;
-          this.ref.close({ success: true, action: 'Edit' });
+          this.ref.close({ success: true, action: this.actionState.edit });
         });
     }
   }
@@ -112,7 +114,7 @@ export class CategoryFormComponent implements OnInit {
       .deleteCategory(this.config.data?.category)
       .subscribe((result) => {
         this.isLoading = false;
-        this.ref.close({ success: true, action: 'Delete' });
+        this.ref.close({ success: true, action: this.actionState.delete });
       });
   }
 }

@@ -17,6 +17,7 @@ import {
 import { SuppliersService } from '../../shared/services/suppliers.service';
 import { Isupplier } from '../../shared/models/isupplier';
 import { config } from 'process';
+import { actions } from '../../shared/enum/actions.enum';
 
 @Component({
   selector: 'app-supplier-form',
@@ -37,6 +38,7 @@ import { config } from 'process';
 export class SupplierFormComponent implements OnInit {
   public supplierForm!: FormGroup;
   public action: string = '';
+  public actionState = actions;
   public isLoading: boolean = false;
   public messages!: Message[];
 
@@ -49,10 +51,10 @@ export class SupplierFormComponent implements OnInit {
   ngOnInit(): void {
     this.initSupplierForm();
     this.action = this.config.data?.action;
-    if (this.action != 'Add') {
+    if (this.action != this.actionState.add) {
       this.supplierForm.patchValue(this.config.data?.supplier);
     }
-    if (this.action === 'Delete') {
+    if (this.action === this.actionState.delete) {
       this.messages = [
         { severity: 'error', detail: 'Are you sure Delete Supplier' },
       ];
@@ -67,13 +69,13 @@ export class SupplierFormComponent implements OnInit {
   }
 
   onSupplierFormControls() {
-    if (this.action === 'Add') {
+    if (this.action === this.actionState.add) {
       this.onAddSupplier();
     }
-    if (this.action === 'Edit') {
+    if (this.action === this.actionState.edit) {
       this.onEditSupplier();
     }
-    if (this.action === 'Delete') {
+    if (this.action === this.actionState.delete) {
       this.onDeleteSupplier();
     }
   }
@@ -85,7 +87,7 @@ export class SupplierFormComponent implements OnInit {
       .deleteSupplier(this.config.data.supplier)
       .subscribe((result) => {
         this.isLoading = false;
-        this.ref.close({ success: true, action: 'Delete' });
+        this.ref.close({ success: true, action: this.actionState.delete });
       });
   }
 
@@ -96,7 +98,7 @@ export class SupplierFormComponent implements OnInit {
       .updateSupplier(this.supplierForm.value)
       .subscribe((result) => {
         this.isLoading = false;
-        this.ref.close({ success: true, action: 'Edit' });
+        this.ref.close({ success: true, action: this.actionState.edit });
       });
   }
 
@@ -109,7 +111,7 @@ export class SupplierFormComponent implements OnInit {
         .addNewSupplier(this.supplierForm.value)
         .subscribe((result) => {
           this.isLoading = false;
-          this.ref.close({ success: true, action: 'Add' });
+          this.ref.close({ success: true, action: this.actionState.add });
         });
     }
   }
