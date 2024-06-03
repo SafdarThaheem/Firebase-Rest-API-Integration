@@ -16,6 +16,11 @@ import { MessagesModule } from 'primeng/messages';
 import { Message } from 'primeng/api';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { InputTextModule } from 'primeng/inputtext';
+import { SuppliersService } from '../../shared/services/suppliers.service';
+import { CategoriesService } from '../../shared/services/categories.service';
+import { Isupplier } from '../../shared/models/isupplier';
+import { Icategory } from '../../shared/models/icategory';
+import { DropdownModule } from 'primeng/dropdown';
 
 @Component({
   selector: 'app-product-form',
@@ -29,6 +34,7 @@ import { InputTextModule } from 'primeng/inputtext';
     MessagesModule,
     ProgressSpinnerModule,
     InputTextModule,
+    DropdownModule,
   ],
   templateUrl: './product-form.component.html',
   styleUrl: './product-form.component.scss',
@@ -38,16 +44,22 @@ export class ProductFormComponent implements OnInit {
   public action: string = '';
   public messages!: Message[];
   public isLoading: boolean = false;
+  public suppliersList: Isupplier[] = [];
+  public categoriesList: Icategory[] = [];
 
   constructor(
     private productService: ProductsService,
     private router: Router,
     private ref: DynamicDialogRef,
-    private config: DynamicDialogConfig
+    private config: DynamicDialogConfig,
+    private supplierService: SuppliersService,
+    private categoryService: CategoriesService
   ) {}
 
   ngOnInit(): void {
     this.initiateForm();
+    this.getSupplierList();
+    this.getCategoryList();
     this.action = this.config.data?.action;
     if (this.action != 'Add') {
       this.ProductForm.patchValue(this.config.data?.product);
@@ -67,8 +79,8 @@ export class ProductFormComponent implements OnInit {
     { id: 'price', label: 'Price', name: 'price' },
     { id: 'orderAmount', label: 'Order Amount', name: 'orderAmount' },
     { id: 'stockAmount', label: 'Stock', name: 'stockAmount' },
-    { id: 'categoryId', label: 'Category', name: 'categoryId' },
-    { id: 'supplierId', label: 'Supplier', name: 'supplierId' },
+    { id: 'category', label: 'Category', name: 'categories' },
+    { id: 'supplier', label: 'Supplier', name: 'suppliers' },
   ];
 
   //  Initiate Reactive Form Group and controls
@@ -79,8 +91,8 @@ export class ProductFormComponent implements OnInit {
       price: new FormControl('', Validators.required),
       orderAmount: new FormControl('', Validators.required),
       stockAmount: new FormControl('', Validators.required),
-      categoryId: new FormControl('', Validators.required),
-      supplierId: new FormControl('', Validators.required),
+      categories: new FormControl('', Validators.required),
+      suppliers: new FormControl('', Validators.required),
     });
   }
 
@@ -141,6 +153,20 @@ export class ProductFormComponent implements OnInit {
         this.isLoading = false;
         this.ref.close({ success: false });
       },
+    });
+  }
+
+  getSupplierList() {
+    this.supplierService.getAllSuppliers().subscribe((result) => {
+      this.suppliersList = result;
+      // console.log(result);
+    });
+  }
+
+  getCategoryList() {
+    this.categoryService.getAllCategories().subscribe((result) => {
+      this.categoriesList = result;
+      // console.log(result);
     });
   }
 }

@@ -3,7 +3,21 @@
   <form [formGroup]="ProductForm" (ngSubmit)="onProductFormControls()">
     <div class="flex flex-column" *ngFor="let field of formFields">
       <label [for]="field.id" class="font-semibold my-1">{{ field.label }}</label>
-      <input pInputText [id]="field.id" class="flex-auto" autocomplete="off" [formControlName]="field.name" />
+      <ng-container [ngSwitch]="field.name">
+        <ng-container *ngSwitchCase="'categories'">
+          <p-dropdown [options]="categoriesList" optionLabel="name" [id]="field.id" [formControlName]="field.name"
+            placeholder="Select a Category">
+          </p-dropdown>
+        </ng-container>
+        <ng-container *ngSwitchCase="'suppliers'">
+          <p-dropdown [options]="suppliersList" optionLabel="name" [id]="field.id" [formControlName]="field.name"
+            placeholder="Select a Supplier">
+          </p-dropdown>
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+          <input pInputText [id]="field.id" class="flex-auto" autocomplete="off" [formControlName]="field.name" />
+        </ng-container>
+      </ng-container>
       <div
         *ngIf="ProductForm.get(field.name)?.invalid && (ProductForm.get(field.name)?.dirty || ProductForm.get(field.name)?.touched)">
         <small class="p-error" *ngIf="ProductForm.get(field.name)?.errors?.['required']">
