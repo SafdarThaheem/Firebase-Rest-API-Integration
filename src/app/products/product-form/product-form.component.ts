@@ -54,14 +54,14 @@ export class ProductFormComponent implements OnInit {
     private router: Router,
     private ref: DynamicDialogRef,
     private config: DynamicDialogConfig,
-    private supplierService: SuppliersService,
-    private categoryService: CategoriesService
+    private categoryService: CategoriesService,
+    private supplierService: SuppliersService
   ) {}
 
   ngOnInit(): void {
+    this.getSuppliers();
+    this.getCategories();
     this.initiateForm();
-    this.getSupplierList();
-    this.getCategoryList();
     this.action = this.config.data?.action;
     if (this.action != this.actionState.add) {
       this.ProductForm.patchValue(this.config.data?.product);
@@ -81,8 +81,8 @@ export class ProductFormComponent implements OnInit {
     { id: 'price', label: 'Price', name: 'price' },
     { id: 'orderAmount', label: 'Order Amount', name: 'orderAmount' },
     { id: 'stockAmount', label: 'Stock', name: 'stockAmount' },
-    { id: 'category', label: 'Category', name: 'categories' },
-    { id: 'supplier', label: 'Supplier', name: 'suppliers' },
+    { id: 'categories', label: 'Category', name: 'categoryId' },
+    { id: 'suppliers', label: 'Supplier', name: 'supplierId' },
   ];
 
   //  Initiate Reactive Form Group and controls
@@ -93,8 +93,8 @@ export class ProductFormComponent implements OnInit {
       price: new FormControl('', Validators.required),
       orderAmount: new FormControl('', Validators.required),
       stockAmount: new FormControl('', Validators.required),
-      categories: new FormControl('', Validators.required),
-      suppliers: new FormControl('', Validators.required),
+      categoryId: new FormControl('', Validators.required),
+      supplierId: new FormControl('', Validators.required),
     });
   }
 
@@ -158,17 +158,17 @@ export class ProductFormComponent implements OnInit {
     });
   }
 
-  getSupplierList() {
-    this.supplierService.getAllSuppliers().subscribe((result) => {
-      this.suppliersList = result;
-      // console.log(result);
+  // Get Categories
+  getCategories(): void {
+    this.categoryService.getAllCategories().subscribe((res) => {
+      this.categoriesList = res;
     });
   }
 
-  getCategoryList() {
-    this.categoryService.getAllCategories().subscribe((result) => {
-      this.categoriesList = result;
-      // console.log(result);
+  // Get Suppliers
+  getSuppliers(): void {
+    this.supplierService.getAllSuppliers().subscribe((res) => {
+      this.suppliersList = res;
     });
   }
 }

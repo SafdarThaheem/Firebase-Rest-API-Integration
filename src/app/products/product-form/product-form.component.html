@@ -4,14 +4,14 @@
     <div class="flex flex-column" *ngFor="let field of formFields">
       <label [for]="field.id" class="font-semibold my-1">{{ field.label }}</label>
       <ng-container [ngSwitch]="field.name">
-        <ng-container *ngSwitchCase="'categories'">
-          <p-dropdown [options]="categoriesList" optionLabel="name" [id]="field.id" [formControlName]="field.name"
-            placeholder="Select a Category">
+        <ng-container *ngSwitchCase="'categoryId'">
+          <p-dropdown [options]="categoriesList" optionValue="categoryId" optionLabel="name" [id]="field.id"
+            [formControlName]="field.name" placeholder="Select a Category">
           </p-dropdown>
         </ng-container>
-        <ng-container *ngSwitchCase="'suppliers'">
-          <p-dropdown [options]="suppliersList" optionLabel="name" [id]="field.id" [formControlName]="field.name"
-            placeholder="Select a Supplier">
+        <ng-container *ngSwitchCase="'supplierId'">
+          <p-dropdown [options]="suppliersList" optionValue="supplierId" optionLabel="name" [id]="field.id"
+            [formControlName]="field.name" placeholder="Select a Supplier">
           </p-dropdown>
         </ng-container>
         <ng-container *ngSwitchDefault>

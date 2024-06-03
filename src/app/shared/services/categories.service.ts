@@ -14,7 +14,7 @@ export class CategoriesService {
   getAllCategories(): Observable<Icategory[]> {
     return this.http
       .get<{ [key: string]: Icategory }>(
-        `${this.firebaseApi.apiBaseUrl}/${this.firebaseApi.apiEndPoints.categoryObject}?orderBy="$key"&limitToLast=10`
+        `${this.firebaseApi.apiBaseUrl}/${this.firebaseApi.apiEndPoints.categoryObject}?orderBy="$key"&limitToLast=20`
       )
       .pipe(
         map((responseData) => {
