@@ -59,9 +59,9 @@ export class ProductFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.initiateForm();
     this.getSuppliers();
     this.getCategories();
-    this.initiateForm();
     this.action = this.config.data?.action;
     if (this.action != this.actionState.add) {
       this.ProductForm.patchValue(this.config.data?.product);
