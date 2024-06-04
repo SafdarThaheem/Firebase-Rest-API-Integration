@@ -133,8 +133,30 @@ export class ProductFormComponent implements OnInit {
     this.isLoading = true;
     this.productService.updateProducts(this.ProductForm.value).subscribe({
       next: () => {
-        this.ProductForm.reset();
-        this.ref.close({ success: true, action: this.actionState.edit });
+        if (
+          this.ProductForm.value.categoryId !==
+          this.config.data.product.categoryId
+        ) {
+          // delete the previous product
+          this.productService
+            .deleteProduct(this.config.data.product)
+            .subscribe({
+              next: () => {
+                this.isLoading = false;
+                this.ref.close({
+                  success: true,
+                  action: this.actionState.edit,
+                });
+              },
+              error: () => {
+                this.isLoading = false;
+                this.ref.close({ success: false });
+              },
+            });
+        } else {
+          this.ProductForm.reset();
+          this.ref.close({ success: true, action: this.actionState.edit });
+        }
       },
       error: () => {
         this.isLoading = false;
