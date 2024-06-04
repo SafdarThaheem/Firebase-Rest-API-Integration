@@ -5,13 +5,13 @@
       <label [for]="field.id" class="font-semibold my-1">{{ field.label }}</label>
       <ng-container [ngSwitch]="field.name">
         <ng-container *ngSwitchCase="'categoryId'">
-          <p-dropdown [options]="categoriesList" optionValue="categoryId" optionLabel="name" [id]="field.id"
-            [formControlName]="field.name" placeholder="Select a Category">
+          <p-dropdown [options]="categoriesList" autoWidth="false" [style]="{'width':'100%'}" optionValue="categoryId"
+            optionLabel="name" [id]="field.id" [formControlName]="field.name" placeholder="Select a Category">
           </p-dropdown>
         </ng-container>
         <ng-container *ngSwitchCase="'supplierId'">
-          <p-dropdown [options]="suppliersList" optionValue="supplierId" optionLabel="name" [id]="field.id"
-            [formControlName]="field.name" placeholder="Select a Supplier">
+          <p-dropdown [options]="suppliersList" autoWidth="false" [style]="{'width':'100%'}" optionValue="supplierId"
+            optionLabel="name" [id]="field.id" [formControlName]="field.name" placeholder="Select a Supplier">
           </p-dropdown>
         </ng-container>
         <ng-container *ngSwitchDefault>

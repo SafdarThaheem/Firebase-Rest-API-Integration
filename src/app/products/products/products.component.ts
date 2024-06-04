@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ProductsService } from '../../shared/services/products.service';
 import {
   DialogService,
@@ -16,6 +16,7 @@ import { ProductFormComponent } from '../product-form/product-form.component';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { SearchComponent } from '../../search/search.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-products',
@@ -35,8 +36,9 @@ import { SearchComponent } from '../../search/search.component';
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss',
 })
-export class ProductsComponent {
+export class ProductsComponent implements OnInit, OnDestroy {
   public productList: Product[] = [];
+  public productSubscriptions!: Subscription;
   public productForm!: FormGroup;
   public selectedProduct!: Product;
 
@@ -84,11 +86,13 @@ export class ProductsComponent {
 
   // Fetch All Products
   getAllProducts() {
-    this.productsService.getProducts().subscribe((response: Product[]) => {
-      if (response) {
-        this.productList = response;
-      }
-    });
+    this.productSubscriptions = this.productsService
+      .getProducts()
+      .subscribe((response: Product[]) => {
+        if (response) {
+          this.productList = response;
+        }
+      });
   }
 
   // filter the Product list
@@ -101,5 +105,9 @@ export class ProductsComponent {
         product.name.toLowerCase().includes(searchValue.toLowerCase())
       );
     }
+  }
+
+  ngOnDestroy(): void {
+    this.productSubscriptions.unsubscribe();
   }
 }

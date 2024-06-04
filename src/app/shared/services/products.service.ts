@@ -14,16 +14,20 @@ export class ProductsService {
   getProducts(): Observable<Product[]> {
     return this.http
       .get<{ [key: string]: Product }>(
-        `${this.firebaseApi.apiBaseUrl}/${this.firebaseApi.apiEndPoints.productObjects}?orderBy="$key"&limitToLast=10`
+        `${this.firebaseApi.apiBaseUrl}/${this.firebaseApi.apiEndPoints.productObjects}?orderBy="$key"&limitToLast=20`
       )
       .pipe(
         map((responseData) => {
-          const productsArray: Product[] = [];
-          for (const key in responseData) {
-            if (responseData.hasOwnProperty(key)) {
-              productsArray.push({ ...responseData[key], categoryId: key });
-            }
-          }
+          // console.log(Object.keys(responseData));
+          const productsArray = Object.keys(responseData).map((key) => {
+            return responseData[key];
+          });
+
+          // for (const key in responseData) {
+          //   if (responseData.hasOwnProperty(key)) {
+          //     productsArray.push({ ...responseData[key], categoryId: key });
+          //   }
+          // }
           return productsArray.reverse();
         })
       );

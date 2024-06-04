@@ -20,9 +20,7 @@ export class SuppliersService {
         map((responseData) => {
           const suppliersArray: Isupplier[] = [];
           for (const key in responseData) {
-            if (responseData.hasOwnProperty(key)) {
-              suppliersArray.push({ ...responseData[key], supplierId: key });
-            }
+            suppliersArray.push({ ...responseData[key], supplierId: key });
           }
           return suppliersArray.reverse();
         })

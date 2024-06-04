@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CategoriesService } from '../../shared/services/categories.service';
 import { FormControl, FormGroup, FormsModule } from '@angular/forms';
 import { Icategory } from '../../shared/models/icategory';
@@ -15,6 +15,7 @@ import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { CategoryFormComponent } from '../category-form/category-form.component';
 import { SearchComponent } from '../../search/search.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-category-list',
@@ -33,9 +34,10 @@ import { SearchComponent } from '../../search/search.component';
   templateUrl: './category-list.component.html',
   styleUrl: './category-list.component.scss',
 })
-export class CategoryListComponent implements OnInit {
-  categoryList!: Icategory[];
+export class CategoryListComponent implements OnInit, OnDestroy {
+  public categoryList!: Icategory[];
   private ref: DynamicDialogRef | undefined;
+  public categorySubscriptions!: Subscription;
 
   constructor(
     private categoryService: CategoriesService,
@@ -68,11 +70,13 @@ export class CategoryListComponent implements OnInit {
   }
 
   fetchCategoryList() {
-    this.categoryService.getAllCategories().subscribe((res) => {
-      if (res) {
-        this.categoryList = res;
-      }
-    });
+    this.categorySubscriptions = this.categoryService
+      .getAllCategories()
+      .subscribe((res) => {
+        if (res) {
+          this.categoryList = res;
+        }
+      });
   }
 
   onSearch(searchValue: string) {
@@ -84,5 +88,9 @@ export class CategoryListComponent implements OnInit {
         category.name.toLowerCase().includes(searchValue.toLowerCase())
       );
     }
+  }
+
+  ngOnDestroy(): void {
+    this.categorySubscriptions.unsubscribe();
   }
 }

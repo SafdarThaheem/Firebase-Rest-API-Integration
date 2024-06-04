@@ -20,9 +20,7 @@ export class CategoriesService {
         map((responseData) => {
           const productsArray: Icategory[] = [];
           for (const key in responseData) {
-            if (responseData.hasOwnProperty(key)) {
-              productsArray.push({ ...responseData[key], categoryId: key });
-            }
+            productsArray.push({ ...responseData[key], categoryId: key });
           }
           return productsArray.reverse();
         })

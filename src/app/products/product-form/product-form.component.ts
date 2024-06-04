@@ -22,6 +22,7 @@ import { Isupplier } from '../../shared/models/isupplier';
 import { Icategory } from '../../shared/models/icategory';
 import { DropdownModule } from 'primeng/dropdown';
 import { actions } from '../../shared/enum/actions.enum';
+import { KeyFilterModule } from 'primeng/keyfilter';
 
 @Component({
   selector: 'app-product-form',
@@ -36,6 +37,7 @@ import { actions } from '../../shared/enum/actions.enum';
     ProgressSpinnerModule,
     InputTextModule,
     DropdownModule,
+    KeyFilterModule,
   ],
   templateUrl: './product-form.component.html',
   styleUrl: './product-form.component.scss',
@@ -79,10 +81,23 @@ export class ProductFormComponent implements OnInit {
     { id: 'name', label: 'Name', name: 'name' },
     { id: 'imgUrl', label: 'Image URL', name: 'imgUrl' },
     { id: 'price', label: 'Price', name: 'price' },
-    { id: 'orderAmount', label: 'Order Amount', name: 'orderAmount' },
+    {
+      id: 'orderAmount',
+      label: 'Order Amount',
+      name: 'orderAmount',
+      type: 'int',
+    },
     { id: 'stockAmount', label: 'Stock', name: 'stockAmount' },
-    { id: 'categories', label: 'Category', name: 'categoryId' },
-    { id: 'suppliers', label: 'Supplier', name: 'supplierId' },
+    {
+      id: 'categories',
+      label: 'Category',
+      name: 'categoryId',
+    },
+    {
+      id: 'suppliers',
+      label: 'Supplier',
+      name: 'supplierId',
+    },
   ];
 
   //  Initiate Reactive Form Group and controls

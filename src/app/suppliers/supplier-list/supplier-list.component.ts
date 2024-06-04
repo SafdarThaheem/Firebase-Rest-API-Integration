@@ -1,4 +1,11 @@
-import { Component, computed, input, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  computed,
+  input,
+  Input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { SuppliersService } from '../../shared/services/suppliers.service';
 import { ListboxModule } from 'primeng/listbox';
@@ -14,6 +21,7 @@ import { ToastModule } from 'primeng/toast';
 import { Isupplier } from '../../shared/models/isupplier';
 import { SupplierFormComponent } from '../supplier-form/supplier-form.component';
 import { SearchComponent } from '../../search/search.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-supplier-list',
@@ -31,8 +39,9 @@ import { SearchComponent } from '../../search/search.component';
   templateUrl: './supplier-list.component.html',
   styleUrl: './supplier-list.component.scss',
 })
-export class SupplierListComponent implements OnInit {
-  supplierList!: Isupplier[];
+export class SupplierListComponent implements OnInit, OnDestroy {
+  public supplierList!: Isupplier[];
+  public supplierSubscriptions!: Subscription;
 
   private ref: DynamicDialogRef | undefined;
 
@@ -69,11 +78,13 @@ export class SupplierListComponent implements OnInit {
   }
 
   getSuppliersList() {
-    this.supplierService.getAllSuppliers().subscribe((res) => {
-      if (res) {
-        this.supplierList = res;
-      }
-    });
+    this.supplierSubscriptions = this.supplierService
+      .getAllSuppliers()
+      .subscribe((res) => {
+        if (res) {
+          this.supplierList = res;
+        }
+      });
   }
 
   // filter the supplier list
@@ -86,5 +97,9 @@ export class SupplierListComponent implements OnInit {
         supplier.name.toLowerCase().includes(searchValue.toLowerCase())
       );
     }
+  }
+
+  ngOnDestroy(): void {
+    this.supplierSubscriptions.unsubscribe();
   }
 }
