@@ -19,15 +19,15 @@ export class ProductsService {
       .pipe(
         map((responseData) => {
           // console.log(Object.keys(responseData));
-          const productsArray = Object.keys(responseData).map((key) => {
-            return responseData[key];
-          });
-
-          // for (const key in responseData) {
-          //   if (responseData.hasOwnProperty(key)) {
-          //     productsArray.push({ ...responseData[key], categoryId: key });
-          //   }
-          // }
+          // const productsArray = Object.keys(responseData).map((key) => {
+          //   return responseData[key];
+          // });
+          const productsArray: Product[] = [];
+          for (const key in responseData) {
+            if (responseData.hasOwnProperty(key)) {
+              productsArray.push({ ...responseData[key], id: key });
+            }
+          }
           return productsArray.reverse();
         })
       );
@@ -36,7 +36,7 @@ export class ProductsService {
   // Update Selected Product
   updateProducts(updatedProduct: Product): Observable<Product> {
     return this.http.put<Product>(
-      `${this.firebaseApi.apiBaseUrl}/${this.firebaseApi.apiEndPoints.products}/${updatedProduct.categoryId}.json`,
+      `${this.firebaseApi.apiBaseUrl}/${this.firebaseApi.apiEndPoints.products}/${updatedProduct.id}.json`,
       updatedProduct
     );
   }
@@ -44,7 +44,7 @@ export class ProductsService {
   // Delete Selected Product
   deleteProduct(selectedProduct: Product) {
     return this.http.delete<Product>(
-      `${this.firebaseApi.apiBaseUrl}/${this.firebaseApi.apiEndPoints.products}/${selectedProduct.categoryId}.json`
+      `${this.firebaseApi.apiBaseUrl}/${this.firebaseApi.apiEndPoints.products}/${selectedProduct.id}.json`
     );
   }
 

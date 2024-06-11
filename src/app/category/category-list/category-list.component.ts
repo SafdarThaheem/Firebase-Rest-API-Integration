@@ -34,7 +34,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './category-list.component.html',
   styleUrl: './category-list.component.scss',
 })
-export class CategoryListComponent implements OnInit, OnDestroy {
+export class CategoryListComponent implements OnInit {
   public categoryList!: Icategory[];
   private ref: DynamicDialogRef | undefined;
   public categorySubscriptions!: Subscription;
@@ -70,13 +70,11 @@ export class CategoryListComponent implements OnInit, OnDestroy {
   }
 
   fetchCategoryList() {
-    this.categorySubscriptions = this.categoryService
-      .getAllCategories()
-      .subscribe((res) => {
-        if (res) {
-          this.categoryList = res;
-        }
-      });
+    this.categoryService.getAllCategories().subscribe((res) => {
+      if (res) {
+        this.categoryList = res;
+      }
+    });
   }
 
   onSearch(searchValue: string) {
@@ -88,9 +86,5 @@ export class CategoryListComponent implements OnInit, OnDestroy {
         category.name.toLowerCase().includes(searchValue.toLowerCase())
       );
     }
-  }
-
-  ngOnDestroy(): void {
-    this.categorySubscriptions.unsubscribe();
   }
 }

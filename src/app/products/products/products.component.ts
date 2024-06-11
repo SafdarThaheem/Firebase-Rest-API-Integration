@@ -36,7 +36,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss',
 })
-export class ProductsComponent implements OnInit, OnDestroy {
+export class ProductsComponent implements OnInit {
   public productList: Product[] = [];
   public productSubscriptions!: Subscription;
   public productForm!: FormGroup;
@@ -86,13 +86,12 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   // Fetch All Products
   getAllProducts() {
-    this.productSubscriptions = this.productsService
-      .getProducts()
-      .subscribe((response: Product[]) => {
-        if (response) {
-          this.productList = response;
-        }
-      });
+    this.productsService.getProducts().subscribe((response: Product[]) => {
+      if (response) {
+        // console.log(response);
+        this.productList = response;
+      }
+    });
   }
 
   // filter the Product list
@@ -105,9 +104,5 @@ export class ProductsComponent implements OnInit, OnDestroy {
         product.name.toLowerCase().includes(searchValue.toLowerCase())
       );
     }
-  }
-
-  ngOnDestroy(): void {
-    this.productSubscriptions.unsubscribe();
   }
 }

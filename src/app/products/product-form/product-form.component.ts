@@ -50,6 +50,7 @@ export class ProductFormComponent implements OnInit {
   public isLoading: boolean = false;
   public suppliersList: Isupplier[] = [];
   public categoriesList: Icategory[] = [];
+  public selectedProduct = this.config.data.product;
 
   constructor(
     private productService: ProductsService,
@@ -61,6 +62,7 @@ export class ProductFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log(this.selectedProduct);
     this.initiateForm();
     this.getSuppliers();
     this.getCategories();
@@ -145,33 +147,12 @@ export class ProductFormComponent implements OnInit {
 
   // Update Product
   onUpdate(): void {
+    this.ProductForm.value.id = this.selectedProduct.id;
     this.isLoading = true;
     this.productService.updateProducts(this.ProductForm.value).subscribe({
       next: () => {
-        if (
-          this.ProductForm.value.categoryId !==
-          this.config.data.product.categoryId
-        ) {
-          // delete the previous product
-          this.productService
-            .deleteProduct(this.config.data.product)
-            .subscribe({
-              next: () => {
-                this.isLoading = false;
-                this.ref.close({
-                  success: true,
-                  action: this.actionState.edit,
-                });
-              },
-              error: () => {
-                this.isLoading = false;
-                this.ref.close({ success: false });
-              },
-            });
-        } else {
-          this.ProductForm.reset();
-          this.ref.close({ success: true, action: this.actionState.edit });
-        }
+        this.ProductForm.reset();
+        this.ref.close({ success: true, action: this.actionState.edit });
       },
       error: () => {
         this.isLoading = false;
@@ -182,6 +163,7 @@ export class ProductFormComponent implements OnInit {
 
   // Delete Product
   onDelete(): void {
+    this.ProductForm.value.id = this.selectedProduct.id;
     this.isLoading = true;
     this.productService.deleteProduct(this.ProductForm.value).subscribe({
       next: () => {
